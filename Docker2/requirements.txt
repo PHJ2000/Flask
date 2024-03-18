@@ -1,0 +1,15 @@
+flask
+flask_wtf
+gunicorn
+sqlalchemy
+sqlalchemy.orm
+datetime
+wtforms
+wtforms.validators
+wtforms_json
+werkzeug
+PyMySQL
+mysqlclient
+flask_bcrypt
+load_dotenv
+os

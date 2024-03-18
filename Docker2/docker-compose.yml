@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  flask-app:
+    build: .
+    container_name: flaskapp
+    depends_on:
+      - db
+    environment:
+      DATABASE_HOST: db
+      DATABASE_USER: root
+      DATABASE_PASSWORD: 0
+      DATABASE_NAME: db
+    ports:
+      - "8000:5000"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+
+  db:
+    image: mysql:5.7
+    container_name: mysqldb
+    environment:
+      MYSQL_ROOT_PASSWORD: 0
+      MYSQL_DATABASE: db
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 1024M
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - flask-app
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 512M
+
+volumes:
+  db-data:
